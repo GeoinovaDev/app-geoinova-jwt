@@ -17,18 +17,18 @@ func NewJWTDecoder(secret string) *JWTDecoder {
 	return &JWTDecoder{[]byte(secret)}
 }
 
-func (decoder *JWTDecoder) Parse(token string) JWTClaimCollection {
+func (decoder *JWTDecoder) Parse(token string) *JWTClaimCollection {
 	_token, _ := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
 		return decoder.secret, nil
 	})
 
 	if _token == nil {
-		return JWTClaimCollection{
+		return &JWTClaimCollection{
 			isValid: false,
 		}
 	}
 
-	return JWTClaimCollection{
+	return &JWTClaimCollection{
 		isValid: _token.Valid,
 		claims:  _token.Claims.(jwt.MapClaims),
 	}
